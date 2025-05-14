@@ -9,7 +9,6 @@ import torchvision.models as models
 from torchvision.utils import save_image
 from PIL import Image, ImageQt, ImageEnhance, ImageOps, ImageFile
 
-# إضافة هذا السطر لتجنب أخطاء في تحميل الصور غير المكتملة
 ImageFile.LOAD_TRUNCATED_IMAGES = True
 from PyQt5.QtWidgets import (QApplication, QMainWindow, QWidget, QVBoxLayout, 
                             QHBoxLayout, QLabel, QPushButton, QFileDialog, 
@@ -43,7 +42,7 @@ def get_transforms(augment=False):
     if augment:
         return transforms.Compose([
             transforms.Resize((224, 224)),
-            transforms.Lambda(lambda img: img.convert('RGB')),  # التأكد من أن الصورة ثلاثية القنوات
+            transforms.Lambda(lambda img: img.convert('RGB')),  
             transforms.RandomHorizontalFlip(p=0.5),
             transforms.RandomVerticalFlip(p=0.3),
             transforms.RandomRotation(degrees=20),
@@ -55,7 +54,7 @@ def get_transforms(augment=False):
     else:
         return transforms.Compose([
             transforms.Resize((224, 224)),
-            transforms.Lambda(lambda img: img.convert('RGB')),  # التأكد من أن الصورة ثلاثية القنوات
+            transforms.Lambda(lambda img: img.convert('RGB')),  
             transforms.ToTensor(),
             transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])
         ])
@@ -88,7 +87,6 @@ def apply_custom_augmentation(images, labels, augmentation_factor=5):
     
     # Apply various augmentations
     for i, (image, label) in enumerate(zip(images, labels)):
-        # تأكد من أن الصورة بتنسيق RGB
         if image.mode != 'RGB':
             image = image.convert('RGB')
             
@@ -111,7 +109,6 @@ def apply_custom_augmentation(images, labels, augmentation_factor=5):
             enhancer = ImageEnhance.Contrast(aug_image)
             aug_image = enhancer.enhance(random.uniform(0.8, 1.2))
             
-            # تأكد مرة أخرى من أن الصورة المعدلة بتنسيق RGB
             if aug_image.mode != 'RGB':
                 aug_image = aug_image.convert('RGB')
                 
